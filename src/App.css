@@ -1,38 +1,96 @@
-.App {
+:root {
+  --incorrect-color: #787c7e;
+  --correct-color: #6aa964;
+  --present-color: #c9b458;
+}
+
+* {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.board {
+  display: inline-table;
+  font-size: 50px;
+  margin-top: 50px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.block {
+  width: 80px;
+  height: 80px;
+  margin-right: 70rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.empty {
+  border: 1px solid lightgray;
+  display: table-cell;
+  text-align: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  position: sticky;
+}
+
+.correct {
+  display: table-cell;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--correct-color);
+  position: sticky;
   color: white;
+  background-color: var(--correct-color);
 }
 
-.App-link {
-  color: #61dafb;
+.incorrect {
+  display: table-cell;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  background-color: var(--incorrect-color);
+  color: white;
+  border: 1px solid var(--incorrect-color);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.present {
+  color: white;
+  display: table-cell;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  border: 1px solid var(--present-color);
+  background-color: var(--present-color);
+}
+
+.filled {
+  width: 80px;
+  height: 80px;
+  border: 1px solid black;
+  display: table-cell;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+}
+
+.incorrect-kb {
+  color: white;
+  background: var(--incorrect-color);
+}
+
+.present-kb {
+  color: white;
+  background: var(--present-color);
+}
+
+.correct-kb {
+  color: white;
+  background: var(--correct-color);
+}
+
+button {
+  border-radius: 5px;
+  border: none;
+  padding: 15px;
+  margin: 3px;
 }
