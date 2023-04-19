@@ -6,9 +6,11 @@ import { wordList } from './wordList';
 function App() {
   const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
   const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
-  const thirdRow = ['z', 'x', 'c', 'v', 'v', 'b', 'n', 'm'];
+  const thirdRow = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
 
-  const [correctWord, setCorrectWord] = useState('');
+  const [correctWord, setCorrectWord] = useState(
+    wordList[Math.floor(Math.random() * wordList.length)]
+  );
 
   const emptyBoard = [
     [
@@ -56,14 +58,38 @@ function App() {
   const [currWord, setCurrWord] = useState('');
 
   useEffect(() => {
-    setCorrectWord(wordList[Math.floor(Math.random() * wordList.length)]);
-  }, []);
+    const handleKeyDown = (event) => {
+      const key = event.key.toLowerCase();
+      if (
+        /[a-z]/.test(key) &&
+        key != 'backspace' &&
+        key != 'enter' &&
+        key != 'space' &&
+        key != 'alt' &&
+        key != 'os'
+      ) {
+        if (currCell !== 5) {
+          setCurrWord(currWord + key);
+          let copyBoard = [...board];
+          copyBoard[currRow][currCell].letter = key;
+          copyBoard[currRow][currCell].status = 'filled';
+          setBoard(copyBoard);
+          setCurrCell(currCell + 1);
+        }
+      }
+      if (key == 'enter') enterClick();
+      if (key == 'backspace') backspaceClick();
+    };
 
-  console.log(correctWord);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currCell, currRow, currWord, board]);
 
   const keyboardClick = (e) => {
     const key = e.target.dataset.key;
-    console.log(board);
 
     if (currCell !== 5) {
       setCurrWord(currWord + key);
@@ -71,7 +97,6 @@ function App() {
       copyBoard[currRow][currCell].letter = key;
       copyBoard[currRow][currCell].status = 'filled';
       setBoard(copyBoard);
-      console.log(board);
       setCurrCell(currCell + 1);
     }
   };
@@ -95,9 +120,6 @@ function App() {
     if (currWord.length === 5) {
       const currWordArr = currWord.split('');
       const correctWordArr = correctWord.split('');
-
-      console.log(currWordArr);
-      console.log(correctWordArr);
 
       for (let i = 0; i < currWordArr.length; i++) {
         const key = document.querySelector(`[data-key="${currWordArr[i]}"]`);
@@ -127,10 +149,17 @@ function App() {
         }
 
         if (currWord === correctWord) {
+          setCorrectWord(wordList[Math.floor(Math.random() * wordList.length)]);
+          setCurrWord('');
           win();
+
+          window.location.reload(false);
+        }
+
+        if (currWord !== correctWord && currRow == 4) {
+          lose();
         }
       }
-      console.log(board);
       setCurrRow(currRow + 1);
       setCurrCell(0);
       setCurrWord('');
@@ -138,9 +167,13 @@ function App() {
   };
 
   function win() {
-    setCurrWord('');
-    setBoard(emptyBoard);
-    setCorrectWord(wordList[Math.floor(Math.random() * wordList.length)]);
+    window.alert('You win!!');
+    window.location.reload();
+  }
+
+  function lose() {
+    window.alert(`You lose. Correct word: ${correctWord}`);
+    window.location.reload();
   }
 
   return (
